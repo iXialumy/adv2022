@@ -1,4 +1,5 @@
 use std::collections::HashSet;
+
 use itertools::Itertools;
 
 pub fn day03() {
@@ -8,7 +9,8 @@ pub fn day03() {
 }
 
 fn day03a(input: &str) {
-    let sum: u32 = input.lines()
+    let sum: u32 = input
+        .lines()
         .map(rucksack_from_string)
         .flat_map(common_chars_a)
         .map(priority)
@@ -18,7 +20,8 @@ fn day03a(input: &str) {
 }
 
 fn day03b(input: &str) {
-    let sum: u32 = input.lines()
+    let sum: u32 = input
+        .lines()
         .chunks(3)
         .into_iter()
         .flat_map(common_chars_b)
@@ -29,19 +32,20 @@ fn day03b(input: &str) {
 
 fn rucksack_from_string(rucksack: &str) -> (&str, &str) {
     let len = rucksack.len();
-    if len % 2 != 0 { panic!("Uneven Backpack found: {rucksack}"); }
+    if len % 2 != 0 {
+        panic!("Uneven Backpack found: {rucksack}");
+    }
     rucksack.split_at(len / 2)
 }
 
 fn common_chars_a<'a>((str_a, str_b): (&'a str, &'a str)) -> HashSet<char> {
     let set_b: HashSet<_> = str_b.chars().collect();
-    str_a.chars()
-        .filter(|c| set_b.contains(c))
-        .collect()
+    str_a.chars().filter(|c| set_b.contains(c)).collect()
 }
 
 fn common_chars_b<'a, I>(rucksacks: I) -> HashSet<char>
-    where I: Iterator<Item=&'a str>
+    where
+        I: Iterator<Item=&'a str>,
 {
     let mut acc: Vec<_> = ('a'..='z').chain('A'..='Z').collect();
     for rucksack in rucksacks {
@@ -50,9 +54,10 @@ fn common_chars_b<'a, I>(rucksacks: I) -> HashSet<char>
     acc.iter().cloned().collect()
 }
 
-
 fn priority(c: char) -> u32 {
-    if !c.is_ascii_alphabetic() { panic!("Invalid Item found in Backpack: {c}"); }
+    if !c.is_ascii_alphabetic() {
+        panic!("Invalid Item found in Backpack: {c}");
+    }
     if c.is_ascii_lowercase() {
         c as u32 - 96
     } else {

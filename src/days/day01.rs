@@ -7,15 +7,18 @@ pub fn day01() {
 }
 
 fn day01a(input: &str) {
-    let max: u32 = input.split("\n\n")
+    let max: u32 = input
+        .split("\n\n")
         .map(to_calories)
         .map(|x| x.iter().sum())
-        .max().unwrap();
+        .max()
+        .unwrap();
 
-    println!("Day01a: {}", max);
+    println!("Day01a: {max}");
 }
 fn day01b(input: &str) {
-    let sum: u32 = input.split("\n\n")
+    let sum: u32 = input
+        .split("\n\n")
         .map(to_calories)
         .map(|x| x.iter().sum::<u32>())
         .sorted()
@@ -23,11 +26,9 @@ fn day01b(input: &str) {
         .take(3)
         .sum();
 
-    println!("Day01b: {}", sum);
+    println!("Day01b: {sum}");
 }
 
 fn to_calories(lines: &str) -> Vec<u32> {
-    lines.lines()
-        .filter_map(|x| x.parse().ok())
-        .collect()
+    lines.lines().filter_map(|x| x.parse().ok()).collect()
 }

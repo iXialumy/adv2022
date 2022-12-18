@@ -8,7 +8,7 @@ pub fn day02() {
 enum HandShape {
     Rock,
     Paper,
-    Scissors
+    Scissors,
 }
 
 impl HandShape {
@@ -42,7 +42,7 @@ impl HandShape {
 enum GameEnd {
     Win,
     Draw,
-    Lose
+    Lose,
 }
 
 impl GameEnd {
@@ -56,34 +56,39 @@ impl GameEnd {
     }
 }
 
-
 fn day02a(input: &str) {
-    let sum: u32 = input.lines()
-    .flat_map(parse_line_a)
-    .map(|x| points_for_round(&x))
-    .sum();
-    
-    println!("Day02a: {}", sum);
+    let sum: u32 = input
+        .lines()
+        .flat_map(parse_line_a)
+        .map(|x| points_for_round(&x))
+        .sum();
+
+    println!("Day02a: {sum}");
 }
 
 fn day02b(input: &str) {
-    let sum: u32 = input.lines()
+    let sum: u32 = input
+        .lines()
         .flat_map(parse_line_b)
         .map(correct_play)
         .map(|x| points_for_round(&x))
         .sum();
 
-        println!("Day02b: {}", sum);
+    println!("Day02b: {sum}");
 }
 
 fn parse_line_a(line: &str) -> Option<(HandShape, HandShape)> {
-    Some((HandShape::from_char(&line.chars().next()?)?
-        , HandShape::from_char(&line.chars().nth(2)?)?))
+    Some((
+        HandShape::from_char(&line.chars().next()?)?,
+        HandShape::from_char(&line.chars().nth(2)?)?,
+    ))
 }
 
 fn parse_line_b(line: &str) -> Option<(HandShape, GameEnd)> {
-    Some((HandShape::from_char(&line.chars().next()?)?
-        , GameEnd::from_char(&line.chars().nth(2)?)?))  
+    Some((
+        HandShape::from_char(&line.chars().next()?)?,
+        GameEnd::from_char(&line.chars().nth(2)?)?,
+    ))
 }
 
 fn points_for_round((other, me): &(HandShape, HandShape)) -> u32 {
