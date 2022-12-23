@@ -44,8 +44,8 @@ fn common_chars_a<'a>((str_a, str_b): (&'a str, &'a str)) -> HashSet<char> {
 }
 
 fn common_chars_b<'a, I>(rucksacks: I) -> HashSet<char>
-    where
-        I: Iterator<Item=&'a str>,
+where
+    I: Iterator<Item=&'a str>,
 {
     let mut acc: Vec<_> = ('a'..='z').chain('A'..='Z').collect();
     for rucksack in rucksacks {

@@ -17,11 +17,7 @@ fn day04a(input: &str) {
 }
 
 fn day04b(input: &str) {
-    let overlapping = input
-        .lines()
-        .filter_map(parse_line)
-        .filter(overlap)
-        .count();
+    let overlapping = input.lines().filter_map(parse_line).filter(overlap).count();
 
     println!("Day04b: {overlapping}")
 }
@@ -41,9 +37,9 @@ fn parse_line(line: &str) -> Option<(u32, u32, u32, u32)> {
 
 fn fully_contained((a, b, c, d): &(u32, u32, u32, u32)) -> bool {
     match a.cmp(c) {
-        Ordering::Less => { b >= d }
-        Ordering::Equal => { true }
-        Ordering::Greater => { b <= d }
+        Ordering::Less => b >= d,
+        Ordering::Equal => true,
+        Ordering::Greater => b <= d,
     }
 }
 
