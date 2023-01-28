@@ -11,6 +11,7 @@ use days::day08::*;
 #[allow(unused)]
 use days::day09::*;
 use days::day10::*;
+use days::day11::*;
 
 mod days;
 
@@ -26,5 +27,7 @@ fn main() -> Result<()> {
     day08();
     // day09();
     day10();
+    day11()?;
+
     Ok(())
 }
