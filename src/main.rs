@@ -1,5 +1,3 @@
-use color_eyre::eyre::Result;
-
 use days::day01::*;
 use days::day02::*;
 use days::day03::*;
@@ -12,11 +10,11 @@ use days::day08::*;
 use days::day09::*;
 use days::day10::*;
 use days::day11::*;
+use days::day12::*;
 
 mod days;
 
-fn main() -> Result<()> {
-    color_eyre::install()?;
+fn main() {
     day01();
     day02();
     day03();
@@ -27,7 +25,6 @@ fn main() -> Result<()> {
     day08();
     // day09();
     day10();
-    day11()?;
-
-    Ok(())
+    day11();
+    day12();
 }
