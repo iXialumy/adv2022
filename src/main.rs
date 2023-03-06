@@ -1,3 +1,4 @@
+#![allow(unused)]
 use days::day01::*;
 use days::day02::*;
 use days::day03::*;
@@ -15,16 +16,16 @@ use days::day12::*;
 mod days;
 
 fn main() {
-    day01();
-    day02();
-    day03();
-    day04();
-    day05();
-    day06();
-    day07();
-    day08();
+    // day01();
+    // day02();
+    // day03();
+    // day04();
+    // day05();
+    // day06();
+    // day07();
+    // day08();
     // day09();
-    day10();
-    day11();
+    // day10();
+    // day11();
     day12();
 }
