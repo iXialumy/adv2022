@@ -75,13 +75,13 @@ fn build_graph(matrix: &Vec<Vec<char>>) -> Graph<Weight, usize> {
 
     let mut nodemap = HashMap::new();
 
-    for i in 0..matrix.len() {
+    (0..matrix.len()).for_each(|i| {
         for j in 0..matrix[i].len() {
             let coords = (i, j);
             let node = g.add_node((matrix[i][j], coords));
             nodemap.insert(coords, node);
         }
-    }
+    });
 
     for i in 0..matrix.len() {
         for j in 0..matrix[i].len() {

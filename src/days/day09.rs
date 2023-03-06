@@ -213,10 +213,10 @@ mod tests {
             movements = (0, 0)
         }
         if abs_delta.0 == 2 {
-            movements.0 = movements.0 / 2;
+            movements.0 /= 2;
         }
         if abs_delta.1 == 2 {
-            movements.1 = movements.1 / 2;
+            movements.1 /= 2;
         }
 
         movements
