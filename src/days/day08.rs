@@ -18,11 +18,7 @@ fn day08a(grid: &[Vec<u32>]) {
     let all = or(left_right, right_left, top_down, bottom_up);
     let count: usize = all
         .iter()
-        .map(|row|
-            row
-                .iter()
-                .filter(|x| **x)
-                .count())
+        .map(|row| row.iter().filter(|x| **x).count())
         .sum();
 
     println!("Day08a: {count}");
@@ -32,12 +28,7 @@ fn day08b(grid: &[Vec<u32>]) {
     let max = grid
         .iter()
         .enumerate()
-        .flat_map(|(i, v)|
-            v
-                .iter()
-                .enumerate()
-                .map(move |(j, _)| (i, j))
-        )
+        .flat_map(|(i, v)| v.iter().enumerate().map(move |(j, _)| (i, j)))
         .map(|(i, j)| scenic_score(i, j, grid))
         .max()
         .unwrap();
@@ -46,17 +37,11 @@ fn day08b(grid: &[Vec<u32>]) {
 }
 
 fn parse_grid(input: &str) -> Vec<Vec<u32>> {
-    input
-        .lines()
-        .map(to_digit_arr)
-        .collect()
+    input.lines().map(to_digit_arr).collect()
 }
 
 fn to_digit_arr(line: &str) -> Vec<u32> {
-    line
-        .chars()
-        .flat_map(|c| c.to_digit(10))
-        .collect()
+    line.chars().flat_map(|c| c.to_digit(10)).collect()
 }
 
 fn left_right(grid: &[Vec<u32>]) -> Vec<Vec<bool>> {
@@ -132,7 +117,12 @@ fn bottom_up(grid: &[Vec<u32>]) -> Vec<Vec<bool>> {
     visible
 }
 
-fn or(g1: Vec<Vec<bool>>, g2: Vec<Vec<bool>>, g3: Vec<Vec<bool>>, g4: Vec<Vec<bool>>) -> Vec<Vec<bool>> {
+fn or(
+    g1: Vec<Vec<bool>>,
+    g2: Vec<Vec<bool>>,
+    g3: Vec<Vec<bool>>,
+    g4: Vec<Vec<bool>>,
+) -> Vec<Vec<bool>> {
     izip!(g1, g2, g3, g4)
         .map(|(row1, row2, row3, row4)| {
             izip!(row1, row2, row3, row4)
@@ -144,11 +134,11 @@ fn or(g1: Vec<Vec<bool>>, g2: Vec<Vec<bool>>, g3: Vec<Vec<bool>>, g4: Vec<Vec<bo
 
 fn scenic_score(i: usize, j: usize, grid: &[Vec<u32>]) -> usize {
     let height = grid[i][j];
-    let up = (0..i).rev()
+    let up = (0..i)
+        .rev()
         .map(|i| grid[i][j])
         .take_until(|h| *h >= height)
         .count();
-
 
     let down = (i + 1..grid.len())
         .map(|i| grid[i][j])
@@ -176,68 +166,124 @@ mod tests {
     #[test]
     fn test_left_right() {
         let grid = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
-        let expected = vec![vec![true, true, true], vec![true, true, true], vec![true, true, true]];
+        let expected = vec![
+            vec![true, true, true],
+            vec![true, true, true],
+            vec![true, true, true],
+        ];
         assert_eq!(left_right(&grid), expected);
 
         let grid = vec![vec![3, 2, 1], vec![6, 5, 4], vec![9, 8, 7]];
-        let expected = vec![vec![true, false, false], vec![true, false, false], vec![true, false, false]];
+        let expected = vec![
+            vec![true, false, false],
+            vec![true, false, false],
+            vec![true, false, false],
+        ];
         assert_eq!(left_right(&grid), expected);
 
         let grid = vec![vec![1, 1, 1], vec![1, 1, 1], vec![1, 1, 1]];
-        let expected = vec![vec![true, false, false], vec![true, false, false], vec![true, false, false]];
+        let expected = vec![
+            vec![true, false, false],
+            vec![true, false, false],
+            vec![true, false, false],
+        ];
         assert_eq!(left_right(&grid), expected);
     }
 
     #[test]
     fn test_right_left() {
         let grid = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
-        let expected = vec![vec![false, false, true], vec![false, false, true], vec![false, false, true]];
+        let expected = vec![
+            vec![false, false, true],
+            vec![false, false, true],
+            vec![false, false, true],
+        ];
         assert_eq!(right_left(&grid), expected);
 
         let grid = vec![vec![3, 2, 1], vec![6, 5, 4], vec![9, 8, 7]];
-        let expected = vec![vec![true, true, true], vec![true, true, true], vec![true, true, true]];
+        let expected = vec![
+            vec![true, true, true],
+            vec![true, true, true],
+            vec![true, true, true],
+        ];
         assert_eq!(right_left(&grid), expected);
 
         let grid = vec![vec![1, 1, 1], vec![1, 1, 1], vec![1, 1, 1]];
-        let expected = vec![vec![false, false, true], vec![false, false, true], vec![false, false, true]];
+        let expected = vec![
+            vec![false, false, true],
+            vec![false, false, true],
+            vec![false, false, true],
+        ];
         assert_eq!(right_left(&grid), expected);
     }
 
     #[test]
     fn test_top_down() {
         let grid = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
-        let expected = vec![vec![true, true, true], vec![true, true, true], vec![true, true, true]];
+        let expected = vec![
+            vec![true, true, true],
+            vec![true, true, true],
+            vec![true, true, true],
+        ];
         assert_eq!(top_down(&grid), expected);
 
         let grid = vec![vec![3, 2, 1], vec![6, 5, 4], vec![9, 8, 7]];
-        let expected = vec![vec![true, true, true], vec![true, true, true], vec![true, true, true]];
+        let expected = vec![
+            vec![true, true, true],
+            vec![true, true, true],
+            vec![true, true, true],
+        ];
         assert_eq!(top_down(&grid), expected);
 
         let grid = vec![vec![1, 1, 1], vec![1, 1, 1], vec![1, 1, 1]];
-        let expected = vec![vec![true, true, true], vec![false, false, false], vec![false, false, false]];
+        let expected = vec![
+            vec![true, true, true],
+            vec![false, false, false],
+            vec![false, false, false],
+        ];
         assert_eq!(top_down(&grid), expected);
 
         let grid = vec![vec![3, 1, 1], vec![2, 1, 1], vec![1, 1, 2]];
-        let expected = vec![vec![true, true, true], vec![false, false, false], vec![false, false, true]];
+        let expected = vec![
+            vec![true, true, true],
+            vec![false, false, false],
+            vec![false, false, true],
+        ];
         assert_eq!(top_down(&grid), expected);
     }
 
     #[test]
     fn test_bottom_up() {
         let grid = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
-        let expected = vec![vec![false, false, false], vec![false, false, false], vec![true, true, true]];
+        let expected = vec![
+            vec![false, false, false],
+            vec![false, false, false],
+            vec![true, true, true],
+        ];
         assert_eq!(bottom_up(&grid), expected);
 
         let grid = vec![vec![3, 2, 1], vec![6, 5, 4], vec![9, 8, 7]];
-        let expected = vec![vec![false, false, false], vec![false, false, false], vec![true, true, true]];
+        let expected = vec![
+            vec![false, false, false],
+            vec![false, false, false],
+            vec![true, true, true],
+        ];
         assert_eq!(bottom_up(&grid), expected);
 
         let grid = vec![vec![1, 1, 1], vec![1, 1, 1], vec![1, 1, 1]];
-        let expected = vec![vec![false, false, false], vec![false, false, false], vec![true, true, true]];
+        let expected = vec![
+            vec![false, false, false],
+            vec![false, false, false],
+            vec![true, true, true],
+        ];
         assert_eq!(bottom_up(&grid), expected);
 
         let grid = vec![vec![3, 1, 1], vec![2, 1, 1], vec![1, 1, 2]];
-        let expected = vec![vec![true, false, false], vec![true, false, false], vec![true, true, true]];
+        let expected = vec![
+            vec![true, false, false],
+            vec![true, false, false],
+            vec![true, true, true],
+        ];
         assert_eq!(bottom_up(&grid), expected);
     }
 
@@ -248,7 +294,8 @@ mod tests {
             vec![2, 5, 5, 1, 2],
             vec![6, 5, 3, 3, 2],
             vec![3, 3, 5, 4, 9],
-            vec![3, 5, 3, 9, 0]];
+            vec![3, 5, 3, 9, 0],
+        ];
         assert_eq!(scenic_score(1, 2, &grid), 4);
         assert_eq!(scenic_score(3, 2, &grid), 8);
     }

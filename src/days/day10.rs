@@ -1,5 +1,5 @@
-use std::iter;
 use itertools::Itertools;
+use std::iter;
 
 pub fn day10() {
     let input = include_str!("../../input/10.txt");
@@ -22,16 +22,12 @@ fn day10b(input: &str) {
     let output = iter
         .chunks(40)
         .into_iter()
-        .map(|chunk|
-            chunk
-                .map(render_pixel)
-                .collect::<String>()
-        )
+        .map(|chunk| chunk.map(render_pixel).collect::<String>())
         .join("\n");
     println!("Day10b:\n{output}")
 }
 
-fn cycles(input: &str) -> impl DoubleEndedIterator<Item=(i32, i32)> + '_ {
+fn cycles(input: &str) -> impl DoubleEndedIterator<Item = (i32, i32)> + '_ {
     input
         .lines()
         .flat_map(parse_command)
@@ -56,7 +52,11 @@ fn parse_command(line: &str) -> Vec<i32> {
 
 fn render_pixel((cycle, x): (i32, i32)) -> char {
     let difference = ((x) - ((cycle - 1) % 40)).abs();
-    if difference < 2 { '█' } else { ' ' }
+    if difference < 2 {
+        '█'
+    } else {
+        ' '
+    }
 }
 
 #[cfg(test)]

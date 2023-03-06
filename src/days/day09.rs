@@ -1,5 +1,5 @@
 use anyhow::anyhow;
-use itertools::{Itertools, repeat_n};
+use itertools::{repeat_n, Itertools};
 
 #[allow(unused)]
 pub fn day09() {
@@ -23,25 +23,23 @@ fn day09a(input: &str) {
 
 fn day09b(input: &str) {
     let head_positions = head_positions(input).collect_vec();
-    let positions = (0..9)
-        .fold(head_positions, |mut acc, _| {
-            // println!("{acc:?}\n");
-            acc = acc
-                .iter()
-                .cloned()
-                .scan((0, 0), |tail_pos, head_pos| {
-                    *tail_pos = new_tail_pos(tail_pos, head_pos);
-                    Some(*tail_pos)
-                })
-                .collect_vec();
+    let positions = (0..9).fold(head_positions, |mut acc, _| {
+        // println!("{acc:?}\n");
+        acc = acc
+            .iter()
+            .cloned()
+            .scan((0, 0), |tail_pos, head_pos| {
+                *tail_pos = new_tail_pos(tail_pos, head_pos);
+                Some(*tail_pos)
+            })
+            .collect_vec();
 
-            acc
-        });
+        acc
+    });
     // println!("{positions:?}");
     let count = positions.iter().unique().count();
     println!("Day09b: {count}");
 }
-
 
 fn new_tail_pos(tail_pos: &(i32, i32), head_pos: (i32, i32)) -> (i32, i32) {
     let tail_pos = *tail_pos;
@@ -75,26 +73,26 @@ fn new_tail_pos(tail_pos: &(i32, i32), head_pos: (i32, i32)) -> (i32, i32) {
         (1, -2) => (tail_pos.0 + 1, tail_pos.1 - 1),
         (-1, -2) => (tail_pos.0 - 1, tail_pos.1 - 1),
 
-        (2,2) => (tail_pos.0 + 1, tail_pos.1 + 1),
-        (-2,2) => (tail_pos.0 - 1, tail_pos.1 + 1),
-        (2,-2) => (tail_pos.0 + 1, tail_pos.1 - 1),
-        (-2,-2) => (tail_pos.0 - 1, tail_pos.1 - 1),
+        (2, 2) => (tail_pos.0 + 1, tail_pos.1 + 1),
+        (-2, 2) => (tail_pos.0 - 1, tail_pos.1 + 1),
+        (2, -2) => (tail_pos.0 + 1, tail_pos.1 - 1),
+        (-2, -2) => (tail_pos.0 - 1, tail_pos.1 - 1),
 
-        _ => unreachable!("Difference too large. Head: {head_pos:?}, Tail: {tail_pos:?}")
+        _ => unreachable!("Difference too large. Head: {head_pos:?}, Tail: {tail_pos:?}"),
     }
 }
 
-fn head_positions(input: &str) -> impl Iterator<Item=(i32, i32)> + '_ {
+fn head_positions(input: &str) -> impl Iterator<Item = (i32, i32)> + '_ {
     input
         .lines()
         .map(|line| parse_line(line).unwrap())
         .flat_map(expand_command)
         .scan((0, 0), |state, direction| {
             match direction {
-                Direction::U => { state.0 += 1 }
-                Direction::D => { state.0 -= 1 }
-                Direction::R => { state.1 += 1 }
-                Direction::L => { state.1 -= 1 }
+                Direction::U => state.0 += 1,
+                Direction::D => state.0 -= 1,
+                Direction::R => state.1 += 1,
+                Direction::L => state.1 -= 1,
             };
 
             Some(state.to_owned())
@@ -124,13 +122,13 @@ fn parse_line(line: &str) -> anyhow::Result<Command> {
         "D" => Direction::D,
         "L" => Direction::L,
         "R" => Direction::R,
-        _ => return Err(anyhow!("Cannot Parse Direction: {direction}"))
+        _ => return Err(anyhow!("Cannot Parse Direction: {direction}")),
     };
     let length = length.parse()?;
     Ok(Command { direction, length })
 }
 
-fn expand_command(command: Command) -> impl Iterator<Item=Direction> {
+fn expand_command(command: Command) -> impl Iterator<Item = Direction> {
     repeat_n(command.direction, command.length)
 }
 
@@ -192,14 +190,17 @@ mod tests {
     fn test_move() {
         for i in -2..=2 {
             for j in -2..=2 {
-                let actual = new_tail_pos(&(0,0), (i,j));
-                let expected = get_movements(&(i,j), &(0,0));
+                let actual = new_tail_pos(&(0, 0), (i, j));
+                let expected = get_movements(&(i, j), &(0, 0));
                 assert_eq!(expected, actual);
             }
         }
     }
 
-    fn get_movements(leader_after_move: &(i32, i32), follower_before_move: &(i32, i32)) -> (i32, i32) {
+    fn get_movements(
+        leader_after_move: &(i32, i32),
+        follower_before_move: &(i32, i32),
+    ) -> (i32, i32) {
         let abs_delta = (
             ((leader_after_move.0 - follower_before_move.0).abs()),
             ((leader_after_move.1 - follower_before_move.1).abs()),
